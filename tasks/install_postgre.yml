@@ -40,12 +40,12 @@
 
 - name: copy pg_hba.conf
   copy: 
-    src: /root/ansible-nginx/files/pg_hba.conf
+    src: files/pg_hba.conf
     dest: /var/lib/pgsql/data/pg_hba.conf
 
 - name: copy postgresql.conf
   copy:
-    src: /root/ansible-nginx/files/postgresql.conf
+    src: files/postgresql.conf
     dest: /var/lib/pgsql/data/postgresql.conf
 
 - name: systemctl restart postgresql
