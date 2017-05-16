@@ -1,6 +1,6 @@
 - name: Mirror yandex repo
   copy: 
-    src: /etc/yum.repos.d/CentOS-Base.repo 
+    src: /home/ansible/semaphore/repository_1/files/CentOS-Base.repo 
     dest: /etc/yum.repos.d/CentOS-Base.repo
 
 - name: epel release
@@ -9,7 +9,7 @@
 
 - name: Mirror yandex epel repo
   copy:
-    src: /etc/yum.repos.d/epel.repo
+    src: /home/ansible/semaphore/repository_1/files/epel.repo
     dest: /etc/yum.repos.d/epel.repo
 
 - name: yum -y update
@@ -20,7 +20,7 @@
 
 - name: ssh config file copy
   copy:
-    src: /root/ansible-nginx/files/sshd_config
+    src: /home/ansible/semaphore/repository_1/files/sshd_config
     dest: /etc/ssh/sshd_config
 - name: systemctl restart sshd
   command: systemctl restart sshd
