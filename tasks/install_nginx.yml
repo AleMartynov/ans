@@ -1,31 +1,16 @@
-#- name: NGINX | Installing NGINX repo rpm
-#  yum:
-#    name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
- 
-#- name: NGINX | Installing NGINX
-#  yum:
-#    name: nginx
-    #state: latest
- 
-#- name: NGINX | Starting NGINX
-#  service:
-#    name: nginx
-#    state: started
-
-- name: Mirror yandex repo
-  copy: 
-    src: /etc/yum.repos.d/CentOS-Base.repo 
-    dest: /etc/yum.repos.d/CentOS-Base.repo
-
-- name: epel release
+- name: NGINX | Installing NGINX repo rpm
   yum:
-    name: epel-release
+    name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+ 
+- name: NGINX | Installing NGINX
+  yum:
+    name: nginx
+    state: latest
+ 
+- name: NGINX | Starting NGINX
+  service:
+    name: nginx
+    state: started
 
-- name: Mirror yandex epel repo
-  copy:
-    src: /etc/yum.repos.d/epel.repo
-    dest: /etc/yum.repos.d/epel.repo
 
-- name: yum -y update
-  command: yum -y update
 
