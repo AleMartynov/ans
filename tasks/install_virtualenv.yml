@@ -54,7 +54,7 @@
  
 - name: copy gunicorn.service
   copy:
-    src: /root/ansible-nginx/files/gunicorn.service
+    src: /home/ansible/semaphore/repository_1/files/gunicorn.service
     dest: /etc/systemd/system/gunicorn.service
     
 - name: systemctl start gunicorn
@@ -94,7 +94,7 @@
   
 - name: copy StartServer.sh
   copy:
-    src: /root/ansible-nginx/files/StartServer.sh
+    src: /home/ansible/semaphore/repository_1/files/StartServer.sh
     dest: ~/StartServer.sh
     
 - name: Start Server
