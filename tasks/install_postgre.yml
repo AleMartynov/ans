@@ -1,0 +1,56 @@
+- name: NGINX | Installing NGINX repo rpm
+  yum:
+    name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+ 
+- name: NGINX | Installing NGINX
+  yum:
+    name: nginx
+    state: latest
+ 
+- name: NGINX | Starting NGINX
+  service:
+    name: nginx
+    state: started
+
+- name: install utils 
+  yum:
+    name: "{{item}}"
+  with_items:
+     - python-devel
+     - python-psycopg2
+     - python-pip
+     - postgresql-server 
+     - postgresql-devel 
+     - postgresql-contrib 
+     - gcc
+
+
+- name: postgresql-setup initdb
+  command: postgresql-setup initdb
+  ignore_errors: true
+
+- name: systemctl start postgresql
+  command: systemctl start postgresql
+  ignore_errors: true
+
+- name: rm /var/lib/pgsql/data/pg_hba.conf
+  file:
+    path:  /var/lib/pgsql/data/pg_hba.conf
+    state: absent
+
+- name: copy pg_hba.conf
+  copy: 
+    src: /root/ansible-nginx/files/pg_hba.conf
+    dest: /var/lib/pgsql/data/pg_hba.conf
+
+- name: copy postgresql.conf
+  copy:
+    src: /root/ansible-nginx/files/postgresql.conf
+    dest: /var/lib/pgsql/data/postgresql.conf
+
+- name: systemctl restart postgresql
+  command: systemctl restart postgresql
+
+- name: systemctl enable postgresql
+  command: systemctl enable postgresql
+

@@ -1,0 +1,24 @@
+- hosts: webservers
+  remote_user: centos
+  sudo: True
+  tasks:
+    - include: 'tasks/base_config.yml'
+    
+- hosts: test
+  remote_user: centos
+  sudo: True
+  tasks:
+    - include: 'tasks/install_postgre.yml'
+    
+- hosts: test
+  remote_user: centos
+  sudo: True
+  tasks: 
+    - include: 'tasks/configure_postgre.yml'
+    
+- hosts: test
+  remote_user: centos
+  sudo: True
+  tasks: 
+    - include: 'tasks/install_virtualenv.yml'   
+    

@@ -1,0 +1,102 @@
+- name: mkdir ~/myproject
+  command: mkdir ~/myproject
+  ignore_errors: true
+
+- pip:
+    name: "{{item}}"
+  with_items:
+     - django
+     - gunicorn
+
+- pip:
+    name: psycopg2
+    version: 2.5.4
+     
+- name: create project django
+  command: django-admin.py startproject myproject .
+  ignore_errors: true
+  
+- name: insert
+  blockinfile:
+    path: myproject/settings.py
+    block: |
+      DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'myproject',
+            'USER': 'myprojectuser',
+            'PASSWORD': 'password',
+            'HOST': 'localhost',
+            'PORT': '',
+           }
+        }
+      STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+      ALLOWED_HOSTS = ['*']
+
+
+- name: Complete Initial Project Setup
+  command: "{{item}}"
+  with_items:
+     - ./manage.py makemigrations
+     - ./manage.py migrate
+  ignore_errors: true      
+  
+
+
+- name: Complete Initial Project Setup1
+  command: ./manage.py createsuperuser --username admin --email test@test.tes --noinput
+  ignore_errors: true
+  
+- name: Complete Initial Project Setup2
+  command: ./manage.py collectstatic --noinput  
+  ignore_errors: true
+  
+ 
+- name: copy gunicorn.service
+  copy:
+    src: /root/ansible-nginx/files/gunicorn.service
+    dest: /etc/systemd/system/gunicorn.service
+    
+- name: systemctl start gunicorn
+  command: systemctl start gunicorn 
+  ignore_errors: true    
+  
+- name: systemctl enable gunicorn
+  command: systemctl enable gunicorn 
+  ignore_errors: true  
+  
+- name: copy gunicorn.service
+  copy:
+    src: /root/ansible-nginx/files/nginx.conf
+    dest: /etc/nginx/nginx.conf
+    
+- name: usermod -a -G centos nginx
+  command: usermod -a -G centos nginx 
+  ignore_errors: true      
+      
+- name: chmod 710 /home/centos
+  command: chmod 710 /home/centos
+  ignore_errors: true  
+  
+       
+- name: systemctl start nginx
+  command: systemctl start nginx
+  ignore_errors: true    
+  
+- name: systemctl enable nginx
+  command: systemctl enable nginx 
+  ignore_errors: true  
+  
+    
+- name: nginx -t
+  command: nginx -t 
+  ignore_errors: true  
+  
+- name: copy StartServer.sh
+  copy:
+    src: /root/ansible-nginx/files/StartServer.sh
+    dest: ~/StartServer.sh
+    
+- name: Start Server
+  command: bash StartServer.sh
+  ignore_errors: true

@@ -1,0 +1,9 @@
+- postgresql_db:
+    name: myproject
+  ignore_errors: true
+- postgresql_user:
+    db: myproject
+    name: myprojectuser
+    password: password
+    priv: ALL
+  ignore_errors: true
